@@ -1,0 +1,64 @@
+<#@ template language="C#" #>
+<#@ include file="Common.tt"#>
+using System;
+
+namespace <#= Namespace#>
+{   
+    public static partial class DependencySolver
+    {
+        #region Dependency
+<#
+    for (int i = 2; i <= ArgCount; i++)
+    {
+#>
+        private class Dependency<<#= Enumerate("T@", i) #>> : Dependency
+        {
+            private readonly Action<<#= Enumerate("T@", i) #>> _receive;
+
+            public Dependency(IConsumer consumer, Action<<#= Enumerate("T@", i) #>> receive)
+                : base(consumer, <#= Enumerate("typeof(T@)", i) #>)
+            {
+                _receive = receive;
+            }
+
+            protected override void OnResolved()
+            {
+                _receive(<#= Enumerate("(T@) Dependencies[typeof(T@)]", i, toInsertAfterSeparator:"\n\t\t\t\t\t\t ") #>);
+            }
+        }
+
+<#       
+    }
+#>   
+        #endregion
+        
+        #region Require
+     
+<#
+    for (int i = 2; i <= ArgCount; i++)
+    {
+#>
+        internal static void Require<<#= Enumerate("T@", i) #>>(IConsumer component, Action<<#= Enumerate("T@", i) #>> receive)
+<#= Enumerate("\t\t\t where T@ : class, IInjectable", i, separator: "\n") #>            
+        {
+            if (DependenciesByComponent.ContainsKey(component))
+                return;
+
+            var dependency = new Dependency<<#= Enumerate("T@", i) #>>(component, receive);
+            DependenciesByComponent[component] = dependency;
+<#
+    for (int j = 1; j <= i; j++)
+    {
+#>        
+            OnNewDependency(typeof(T<#= j#>), dependency);<#       
+    }
+#>
+
+        }
+
+<#       
+    }
+#>
+        #endregion
+    }
+}

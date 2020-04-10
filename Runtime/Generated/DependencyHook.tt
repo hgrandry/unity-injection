@@ -1,0 +1,54 @@
+<#@ template language="C#" #>
+<#@ include file="Common.tt"#>
+using System;
+using UnityEngine;
+
+namespace <#= Namespace#>
+{
+    public partial class DependencyHook
+    {
+<#
+    for (int i = 2; i <= ArgCount; i++)
+    {
+#>
+       public void Initialize<<#= Enumerate("T@", i) #>>(MonoBehaviour target, Func<<#= Enumerate("T@", i) #>, Action> receive)
+<#= Enumerate("            where T@ : class, IInjectable", i, separator: "\n") #>            
+       {
+           _internal = new DependencyHookInternal<<#= Enumerate("T@", i) #>>(target, receive);
+           _internal.Enable();
+       } 
+
+<#       
+    }
+#>
+
+<#
+    for (int i = 2; i <= ArgCount; i++)
+    {
+#>
+
+        sealed class DependencyHookInternal<<#= Enumerate("T@", i) #>> : DependencyHookInternal
+<#= Enumerate("            where T@ : class, IInjectable", i, separator: "\n") #>   
+        {
+            private readonly Func<<#= Enumerate("T@", i) #>, Action> _receive;
+
+            public DependencyHookInternal(MonoBehaviour target, Func<<#= Enumerate("T@", i) #>, Action> receive)
+                : base(target)
+            {
+                _receive = receive;
+            }
+
+            public override void Enable()
+            {
+                DependencySolver.Require<<#= Enumerate("T@", i) #>>(this, (<#= Enumerate("x@", i) #>) =>
+                {
+                    MarkAsResolved();
+                    OnValidated(_receive(<#= Enumerate("x@", i) #>));
+                });
+            }
+        }        
+<#       
+    }
+#>
+    }
+}

@@ -1,0 +1,87 @@
+<#@ template language="C#" #>
+<#@ include file="Common.tt"#>
+using System;
+using <#= NamespaceHelpers#>.Unity;
+using UnityEngine;
+
+namespace <#= Namespace#>
+{
+    public static partial class InjectionAPI
+    {       
+        #region Require
+
+<#
+    for (int i = 2; i <= ArgCount; i++)
+    {
+#>
+        /// <summary>
+        /// Require services of type <#= Enumerate("T@", i) #>
+        /// </summary>
+        /// <param name="component">The component requiring the services</param>
+        /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
+<#
+    for (int j = 1; j <= i; j++)
+    {
+#>
+        /// <typeparam name="T<#= j#>"></typeparam>
+<#
+    }
+#>
+        public static void Require<<#= Enumerate("T@", i) #>>(this MonoBehaviour component, Func<<#= Enumerate("T@", i) #>, Action> receive) 
+<#= Enumerate("            where T@ : class, IInjectable", i, separator: "\n") #>   
+        {
+            OnRequire(component);
+
+            var hook = component.gameObject.AddComponent<DependencyHook>();
+            hook.Initialize<<#= Enumerate("T@", i) #>>(component, (<#= Enumerate("x@", i) #>) =>
+            {
+                var dispose = receive(<#= Enumerate("x@", i) #>);
+                OnResolved(component);
+                return dispose;
+            });
+        }
+
+<#
+    }
+#>
+        #endregion
+
+        #region Require, variants with no cleanup method
+
+<#
+    for (int i = 2; i <= ArgCount; i++)
+    {
+#>
+        /// <summary>
+        /// Require services of type <#= Enumerate("T@", i) #>
+        /// </summary>
+        /// <param name="component">The component requiring the service</param>
+        /// <param name="receive">Called when all dependencies are solved</param>
+<#
+    for (int j = 1; j <= i; j++)
+    {
+#>
+        /// <typeparam name="T<#= j#>"></typeparam>
+<#
+    }
+#>
+        public static void Require<<#= Enumerate("T@", i) #>>(this MonoBehaviour component, Action<<#= Enumerate("T@", i) #>> receive) 
+<#= Enumerate("            where T@ : class, IInjectable", i, separator: "\n") #>   
+        {
+            OnRequire(component);
+            
+            var hook = component.gameObject.AddComponent<DependencyHook>();
+            hook.Initialize<<#= Enumerate("T@", i) #>>(component, (<#= Enumerate("x@", i) #>) =>
+            {
+                receive(<#= Enumerate("x@", i) #>);
+                OnResolved(component);
+                return null;
+            });
+        }
+
+ <#
+    }
+#>       
+        #endregion
+    }
+}
