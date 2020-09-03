@@ -6,18 +6,18 @@ namespace HGrandry.Injection
 {
     public static partial class InjectionAPI
     {       
-        #region Require
+        #region Inject
 
         /// <summary>
-        /// Require services of type T1, T2
+        /// Inject services of type T1, T2
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
-        public static void Require<T1, T2>(this MonoBehaviour component, Func<T1, T2, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable   
+        public static void Inject<T1, T2>(this MonoBehaviour component, Func<T1, T2, Action> receive) 
+            where T1 : class
+            where T2 : class   
         {
             OnRequire(component);
 
@@ -31,17 +31,17 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3
+        /// Inject services of type T1, T2, T3
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
         /// <typeparam name="T3"></typeparam>
-        public static void Require<T1, T2, T3>(this MonoBehaviour component, Func<T1, T2, T3, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable   
+        public static void Inject<T1, T2, T3>(this MonoBehaviour component, Func<T1, T2, T3, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class   
         {
             OnRequire(component);
 
@@ -55,7 +55,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4
+        /// Inject services of type T1, T2, T3, T4
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -63,11 +63,11 @@ namespace HGrandry.Injection
         /// <typeparam name="T2"></typeparam>
         /// <typeparam name="T3"></typeparam>
         /// <typeparam name="T4"></typeparam>
-        public static void Require<T1, T2, T3, T4>(this MonoBehaviour component, Func<T1, T2, T3, T4, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4>(this MonoBehaviour component, Func<T1, T2, T3, T4, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class   
         {
             OnRequire(component);
 
@@ -81,7 +81,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5
+        /// Inject services of type T1, T2, T3, T4, T5
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -90,12 +90,12 @@ namespace HGrandry.Injection
         /// <typeparam name="T3"></typeparam>
         /// <typeparam name="T4"></typeparam>
         /// <typeparam name="T5"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class   
         {
             OnRequire(component);
 
@@ -109,7 +109,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6
+        /// Inject services of type T1, T2, T3, T4, T5, T6
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -119,13 +119,13 @@ namespace HGrandry.Injection
         /// <typeparam name="T4"></typeparam>
         /// <typeparam name="T5"></typeparam>
         /// <typeparam name="T6"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class   
         {
             OnRequire(component);
 
@@ -139,7 +139,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -150,14 +150,14 @@ namespace HGrandry.Injection
         /// <typeparam name="T5"></typeparam>
         /// <typeparam name="T6"></typeparam>
         /// <typeparam name="T7"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
         {
             OnRequire(component);
 
@@ -171,7 +171,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -183,15 +183,15 @@ namespace HGrandry.Injection
         /// <typeparam name="T6"></typeparam>
         /// <typeparam name="T7"></typeparam>
         /// <typeparam name="T8"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class   
         {
             OnRequire(component);
 
@@ -205,7 +205,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -218,16 +218,16 @@ namespace HGrandry.Injection
         /// <typeparam name="T7"></typeparam>
         /// <typeparam name="T8"></typeparam>
         /// <typeparam name="T9"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class   
         {
             OnRequire(component);
 
@@ -241,7 +241,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -255,17 +255,17 @@ namespace HGrandry.Injection
         /// <typeparam name="T8"></typeparam>
         /// <typeparam name="T9"></typeparam>
         /// <typeparam name="T10"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class   
         {
             OnRequire(component);
 
@@ -279,7 +279,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -294,18 +294,18 @@ namespace HGrandry.Injection
         /// <typeparam name="T9"></typeparam>
         /// <typeparam name="T10"></typeparam>
         /// <typeparam name="T11"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class   
         {
             OnRequire(component);
 
@@ -319,7 +319,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -335,19 +335,19 @@ namespace HGrandry.Injection
         /// <typeparam name="T10"></typeparam>
         /// <typeparam name="T11"></typeparam>
         /// <typeparam name="T12"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class   
         {
             OnRequire(component);
 
@@ -361,7 +361,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -378,20 +378,20 @@ namespace HGrandry.Injection
         /// <typeparam name="T11"></typeparam>
         /// <typeparam name="T12"></typeparam>
         /// <typeparam name="T13"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable
-            where T13 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class
+            where T13 : class   
         {
             OnRequire(component);
 
@@ -405,7 +405,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -423,21 +423,21 @@ namespace HGrandry.Injection
         /// <typeparam name="T12"></typeparam>
         /// <typeparam name="T13"></typeparam>
         /// <typeparam name="T14"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable
-            where T13 : class, IInjectable
-            where T14 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class
+            where T13 : class
+            where T14 : class   
         {
             OnRequire(component);
 
@@ -451,7 +451,7 @@ namespace HGrandry.Injection
         }
 
         /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -470,22 +470,22 @@ namespace HGrandry.Injection
         /// <typeparam name="T13"></typeparam>
         /// <typeparam name="T14"></typeparam>
         /// <typeparam name="T15"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Action> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable
-            where T13 : class, IInjectable
-            where T14 : class, IInjectable
-            where T15 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this MonoBehaviour component, Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, Action> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class
+            where T13 : class
+            where T14 : class
+            where T15 : class   
         {
             OnRequire(component);
 
@@ -503,15 +503,15 @@ namespace HGrandry.Injection
         #region Require, variants with no cleanup method
 
         /// <summary>
-        /// Require services of type T1, T2
+        /// Inject services of type T1, T2
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
-        public static void Require<T1, T2>(this MonoBehaviour component, Action<T1, T2> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable   
+        public static void Inject<T1, T2>(this MonoBehaviour component, Action<T1, T2> receive) 
+            where T1 : class
+            where T2 : class   
         {
             OnRequire(component);
             
@@ -525,17 +525,17 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3
+        /// Inject services of type T1, T2, T3
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
         /// <typeparam name="T1"></typeparam>
         /// <typeparam name="T2"></typeparam>
         /// <typeparam name="T3"></typeparam>
-        public static void Require<T1, T2, T3>(this MonoBehaviour component, Action<T1, T2, T3> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable   
+        public static void Inject<T1, T2, T3>(this MonoBehaviour component, Action<T1, T2, T3> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class   
         {
             OnRequire(component);
             
@@ -549,7 +549,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4
+        /// Inject services of type T1, T2, T3, T4
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -557,11 +557,11 @@ namespace HGrandry.Injection
         /// <typeparam name="T2"></typeparam>
         /// <typeparam name="T3"></typeparam>
         /// <typeparam name="T4"></typeparam>
-        public static void Require<T1, T2, T3, T4>(this MonoBehaviour component, Action<T1, T2, T3, T4> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4>(this MonoBehaviour component, Action<T1, T2, T3, T4> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class   
         {
             OnRequire(component);
             
@@ -575,7 +575,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5
+        /// Inject services of type T1, T2, T3, T4, T5
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -584,12 +584,12 @@ namespace HGrandry.Injection
         /// <typeparam name="T3"></typeparam>
         /// <typeparam name="T4"></typeparam>
         /// <typeparam name="T5"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class   
         {
             OnRequire(component);
             
@@ -603,7 +603,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6
+        /// Inject services of type T1, T2, T3, T4, T5, T6
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -613,13 +613,13 @@ namespace HGrandry.Injection
         /// <typeparam name="T4"></typeparam>
         /// <typeparam name="T5"></typeparam>
         /// <typeparam name="T6"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class   
         {
             OnRequire(component);
             
@@ -633,7 +633,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -644,14 +644,14 @@ namespace HGrandry.Injection
         /// <typeparam name="T5"></typeparam>
         /// <typeparam name="T6"></typeparam>
         /// <typeparam name="T7"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class   
         {
             OnRequire(component);
             
@@ -665,7 +665,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -677,15 +677,15 @@ namespace HGrandry.Injection
         /// <typeparam name="T6"></typeparam>
         /// <typeparam name="T7"></typeparam>
         /// <typeparam name="T8"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class   
         {
             OnRequire(component);
             
@@ -699,7 +699,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -712,16 +712,16 @@ namespace HGrandry.Injection
         /// <typeparam name="T7"></typeparam>
         /// <typeparam name="T8"></typeparam>
         /// <typeparam name="T9"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class   
         {
             OnRequire(component);
             
@@ -735,7 +735,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -749,17 +749,17 @@ namespace HGrandry.Injection
         /// <typeparam name="T8"></typeparam>
         /// <typeparam name="T9"></typeparam>
         /// <typeparam name="T10"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class   
         {
             OnRequire(component);
             
@@ -773,7 +773,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -788,18 +788,18 @@ namespace HGrandry.Injection
         /// <typeparam name="T9"></typeparam>
         /// <typeparam name="T10"></typeparam>
         /// <typeparam name="T11"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class   
         {
             OnRequire(component);
             
@@ -813,7 +813,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -829,19 +829,19 @@ namespace HGrandry.Injection
         /// <typeparam name="T10"></typeparam>
         /// <typeparam name="T11"></typeparam>
         /// <typeparam name="T12"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class   
         {
             OnRequire(component);
             
@@ -855,7 +855,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -872,20 +872,20 @@ namespace HGrandry.Injection
         /// <typeparam name="T11"></typeparam>
         /// <typeparam name="T12"></typeparam>
         /// <typeparam name="T13"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable
-            where T13 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class
+            where T13 : class   
         {
             OnRequire(component);
             
@@ -899,7 +899,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -917,21 +917,21 @@ namespace HGrandry.Injection
         /// <typeparam name="T12"></typeparam>
         /// <typeparam name="T13"></typeparam>
         /// <typeparam name="T14"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable
-            where T13 : class, IInjectable
-            where T14 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class
+            where T13 : class
+            where T14 : class   
         {
             OnRequire(component);
             
@@ -945,7 +945,7 @@ namespace HGrandry.Injection
         }
 
          /// <summary>
-        /// Require services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15
+        /// Inject services of type T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -964,22 +964,22 @@ namespace HGrandry.Injection
         /// <typeparam name="T13"></typeparam>
         /// <typeparam name="T14"></typeparam>
         /// <typeparam name="T15"></typeparam>
-        public static void Require<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> receive) 
-            where T1 : class, IInjectable
-            where T2 : class, IInjectable
-            where T3 : class, IInjectable
-            where T4 : class, IInjectable
-            where T5 : class, IInjectable
-            where T6 : class, IInjectable
-            where T7 : class, IInjectable
-            where T8 : class, IInjectable
-            where T9 : class, IInjectable
-            where T10 : class, IInjectable
-            where T11 : class, IInjectable
-            where T12 : class, IInjectable
-            where T13 : class, IInjectable
-            where T14 : class, IInjectable
-            where T15 : class, IInjectable   
+        public static void Inject<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(this MonoBehaviour component, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> receive) 
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+            where T6 : class
+            where T7 : class
+            where T8 : class
+            where T9 : class
+            where T10 : class
+            where T11 : class
+            where T12 : class
+            where T13 : class
+            where T14 : class
+            where T15 : class   
         {
             OnRequire(component);
             

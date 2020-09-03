@@ -1,6 +1,6 @@
-<#@ import namespace="System.Text" #>
 <#
-    const string Namespace = "HGrandry.Injection";
+    const string NamespaceHelpers = "HGrandry";
+    const string Namespace = NamespaceHelpers + ".Injection";
     const int ArgCount = 15;
     
     string Enumerate(string phrase, int count, string toInsertAfterSeparator = null, string separator = ", ", string toReplace="@")

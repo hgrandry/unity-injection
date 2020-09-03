@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace HGrandry.Injection
 {
-    public class InjectableHook : MonoBehaviour, IInjectable
+    public class InjectableHook : MonoBehaviour
     {
         private IWrapper _wrapper;
 
@@ -12,7 +12,7 @@ namespace HGrandry.Injection
             void Unregister();
         }   
         
-        class Wrapper<T> : IWrapper where T : MonoBehaviour, IInjectable
+        class Wrapper<T> : IWrapper where T : MonoBehaviour
         {
             private bool _registered;
             private readonly T _service;
@@ -41,7 +41,7 @@ namespace HGrandry.Injection
             }
         }
 
-        public void Initialize<T>(T service)  where T : MonoBehaviour, IInjectable
+        public void Initialize<T>(T service)  where T : MonoBehaviour
         {
             _wrapper = new Wrapper<T>(service);
         }

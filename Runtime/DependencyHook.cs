@@ -8,7 +8,7 @@ namespace HGrandry.Injection
         [SerializeField][HideInInspector] private DependencyHookInternal _internal;
 
         public void Initialize<T>(MonoBehaviour target, Func<T, Action> receive)
-            where T : class, IInjectable
+            where T : class
         {
             _internal = new DependencyHookInternal<T>(target, receive);
             _internal.Enable();
@@ -18,7 +18,7 @@ namespace HGrandry.Injection
         {
             _internal?.Disable();
         }
-        
+
         abstract class DependencyHookInternal : IConsumer
         {
             private readonly MonoBehaviour _target;
@@ -72,7 +72,7 @@ namespace HGrandry.Injection
         }
 
         sealed class DependencyHookInternal<T> : DependencyHookInternal
-            where T : class, IInjectable
+            where T : class
         {
             private readonly Func<T, Action> _receive;
 
@@ -84,7 +84,7 @@ namespace HGrandry.Injection
 
             public override void Enable()
             {
-                DependencySolver.Require<T>(this, x =>
+                DependencySolver.Inject<T>(this, x =>
                 {
                     MarkAsResolved();
                     OnValidated(_receive(x));

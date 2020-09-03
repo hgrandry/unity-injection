@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace HGrandry.Injection
@@ -11,19 +14,19 @@ namespace HGrandry.Injection
     /// </summary>
     public static partial class InjectionAPI
     {
-        private static void OnRequire(Component component)
+        internal static void OnRequire(Component component)
         {
-            if (component is IInjectable)
+            if (component is IEnabledWhenReady)
                 component.gameObject.SetActive(false);
         }
         
-        private static void OnResolved(Component component)
+        internal static void OnResolved(Component component)
         {
-            if (component is IInjectable)
+            if (component is IEnabledWhenReady && component != null)
                 component.gameObject.SetActive(true);
         }
         
-        #region Require
+        #region Inject
 
         /// <summary>
         /// Require a service of type T
@@ -31,7 +34,7 @@ namespace HGrandry.Injection
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
         /// <typeparam name="T"></typeparam>
-        public static void Require<T>(this MonoBehaviour component, Func<T, Action> receive) where T : class, IInjectable
+        public static void Inject<T>(this MonoBehaviour component, Func<T, Action> receive) where T : class
         {
             OnRequire(component);
 
@@ -54,7 +57,7 @@ namespace HGrandry.Injection
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
         /// <typeparam name="T"></typeparam>
-        public static void Require<T>(this MonoBehaviour component, Action<T> receive) where T : class, IInjectable
+        public static void Inject<T>(this MonoBehaviour component, Action<T> receive) where T : class
         {
             OnRequire(component);
             
@@ -77,9 +80,9 @@ namespace HGrandry.Injection
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
         /// <returns>Return the object is registered or null.</returns>
-        public static T GetService<T>(this MonoBehaviour component) where T: class, IInjectable
+        public static T GetService<T>(this MonoBehaviour component) where T: class
         {
-            return DependencySolver.GetRegistered<T>();
+            return DependencySolver.GetService<T>();
         }
 
         /// <summary>
@@ -89,9 +92,9 @@ namespace HGrandry.Injection
         /// <param name="component"></param>
         /// <param name="service"></param>
         /// <returns>Return the object is registered or null.</returns>
-        public static bool TryGetService<T>(this MonoBehaviour component, out T service) where T: class, IInjectable
+        public static bool TryGetService<T>(this MonoBehaviour component, out T service) where T: class
         {
-            service = DependencySolver.GetRegistered<T>();
+            service = DependencySolver.GetService<T>();
             return service != null;
         }
 
@@ -99,7 +102,7 @@ namespace HGrandry.Injection
 
         #region Register
 
-        public static void RegisterAsService<T>(this T service) where T: MonoBehaviour, IInjectable
+        public static void RegisterAsService<T>(this T service) where T: MonoBehaviour
         {
             GameObject go = service.gameObject;
             var isActive = go.activeSelf;
@@ -116,7 +119,7 @@ namespace HGrandry.Injection
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
         /// <param name="service"></param>
-        public static void Register<T>(this MonoBehaviour component, T service) where T: class, IInjectable
+        public static void Register<T>(this MonoBehaviour component, T service) where T: class
         {
             Register<T, T>(component, service, typeof(T));
         }
@@ -127,7 +130,7 @@ namespace HGrandry.Injection
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param> 
-        public static void Register<T>(this T component) where T: class, IInjectable
+        public static void Register<T>(this T component) where T: class
         {
             Register<T, T>(component as MonoBehaviour, component, typeof(T));
         }
@@ -141,7 +144,6 @@ namespace HGrandry.Injection
         /// <param name="type"></param>
         public static void Register<TService, TRegisterAs>(this MonoBehaviour component, TService service, Type type)
             where TService: class, TRegisterAs
-            where TRegisterAs: IInjectable
         {
             DependencySolver.Register<TService, TRegisterAs>(service, type);
         } 
@@ -156,7 +158,7 @@ namespace HGrandry.Injection
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
         /// <param name="service"></param>
-        public static void Unregister<T>(this MonoBehaviour component, T service) where T: class, IInjectable
+        public static void Unregister<T>(this MonoBehaviour component, T service) where T: class
         {
             DependencySolver.Unregister<T, T>(service);
         }
@@ -166,7 +168,7 @@ namespace HGrandry.Injection
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
-        public static void Unregister<T>(this T component) where T: class, IInjectable
+        public static void Unregister<T>(this T component) where T: class
         {
             Unregister(component as MonoBehaviour, component);
         }
@@ -179,10 +181,60 @@ namespace HGrandry.Injection
         /// <param name="type"></param>
         public static void Unregister<TService, TRegisterAs>(this IConsumer component, TService service, Type type)
             where TService : class, TRegisterAs
-            where TRegisterAs : class, IInjectable
+            where TRegisterAs : class
         {
             DependencySolver.Unregister<TService, TRegisterAs>(service);
         } 
+
+        #endregion
+
+        #region Inject
+        
+        public static void Inject<T>(this T component) where T: MonoBehaviour
+        {
+            void OnServicesReady()
+            {
+            }
+
+            void OnServiceRemoved()    
+            {
+            }
+
+            Inject(component, OnServicesReady, OnServiceRemoved);
+        }
+        
+        public static void Inject<T>(this T component, Action onResolved) where T: MonoBehaviour
+        {
+            void OnServiceRemoved()    
+            {
+            }
+
+            Inject(component, onResolved, OnServiceRemoved);
+        }
+        
+        public static void Inject<T>(this T component, Action onServicesReady, Action onServiceRemoved) where T: MonoBehaviour
+        {
+            Inject(component, (fieldMap, consumer) => new ReflectionDependency(component, consumer, onServicesReady, onServiceRemoved, fieldMap));
+        }
+        
+        public static void Inject<T>(this T component, Func<Action> onResolved) where T: MonoBehaviour
+        {
+            Inject(component, (fieldMap, consumer) => new ReflectionDependencyWithInvalidation(component, consumer, onResolved, fieldMap));
+        }
+        
+        private static void Inject<T>(this T component, Func<Dictionary<Type, FieldInfo>, IConsumer, ReflectionDependencyBase> buildDependency) where T: MonoBehaviour
+        {
+            Type type = typeof(T);
+            IEnumerable<FieldInfo> fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(field => field.GetCustomAttributes().Any(a => a is InjectAttribute));
+            Dictionary<Type, FieldInfo> fieldMap = fields.ToDictionary(field => field.FieldType, field => field);
+            var consumerRef = new ConsumerRef(component);
+            ReflectionDependencyBase dependency = buildDependency(fieldMap, consumerRef);
+            consumerRef.InvalidateCallback = dependency.Invalidate;
+            var hook = component.gameObject.AddComponent<ReflectionDependencyHook>();
+            hook.Dependency = dependency;
+            DependencySolver.AddDependency(dependency);
+        }
 
         #endregion
     }

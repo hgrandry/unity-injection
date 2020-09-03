@@ -1,21 +1,21 @@
 <#@ template language="C#" #>
+<#@ import namespace="System.Text" #>
 <#@ include file="Common.tt"#>
 using System;
-using <#= NamespaceHelpers#>.Unity;
 using UnityEngine;
 
 namespace <#= Namespace#>
 {
     public static partial class InjectionAPI
     {       
-        #region Require
+        #region Inject
 
 <#
     for (int i = 2; i <= ArgCount; i++)
     {
 #>
         /// <summary>
-        /// Require services of type <#= Enumerate("T@", i) #>
+        /// Inject services of type <#= Enumerate("T@", i) #>
         /// </summary>
         /// <param name="component">The component requiring the services</param>
         /// <param name="receive">Called when all dependencies are solved, and return a cleanup action called when the component gets invalidated (one dependency get missing) or when the component is destroyed</param>
@@ -27,8 +27,8 @@ namespace <#= Namespace#>
 <#
     }
 #>
-        public static void Require<<#= Enumerate("T@", i) #>>(this MonoBehaviour component, Func<<#= Enumerate("T@", i) #>, Action> receive) 
-<#= Enumerate("            where T@ : class, IInjectable", i, separator: "\n") #>   
+        public static void Inject<<#= Enumerate("T@", i) #>>(this MonoBehaviour component, Func<<#= Enumerate("T@", i) #>, Action> receive) 
+<#= Enumerate("            where T@ : class", i, separator: "\n") #>   
         {
             OnRequire(component);
 
@@ -46,14 +46,14 @@ namespace <#= Namespace#>
 #>
         #endregion
 
-        #region Require, variants with no cleanup method
+        #region Inject, variants with no cleanup method
 
 <#
     for (int i = 2; i <= ArgCount; i++)
     {
 #>
         /// <summary>
-        /// Require services of type <#= Enumerate("T@", i) #>
+        /// Inject services of type <#= Enumerate("T@", i) #>
         /// </summary>
         /// <param name="component">The component requiring the service</param>
         /// <param name="receive">Called when all dependencies are solved</param>
@@ -65,8 +65,8 @@ namespace <#= Namespace#>
 <#
     }
 #>
-        public static void Require<<#= Enumerate("T@", i) #>>(this MonoBehaviour component, Action<<#= Enumerate("T@", i) #>> receive) 
-<#= Enumerate("            where T@ : class, IInjectable", i, separator: "\n") #>   
+        public static void Inject<<#= Enumerate("T@", i) #>>(this MonoBehaviour component, Action<<#= Enumerate("T@", i) #>> receive) 
+<#= Enumerate("            where T@ : class", i, separator: "\n") #>   
         {
             OnRequire(component);
             

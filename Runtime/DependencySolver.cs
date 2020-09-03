@@ -23,26 +23,31 @@ namespace HGrandry.Injection
     
     public static partial class DependencySolver
     {
-        private static readonly Dictionary<Type, object> Services = new Dictionary<Type, object>();
-        private static readonly Dictionary<Type, HashSet<Dependency>> DependenciesByType = new Dictionary<Type, HashSet<Dependency>>();
-        private static readonly Dictionary<IConsumer, Dependency> DependenciesByComponent = new Dictionary<IConsumer, Dependency>();
+        private static readonly Dictionary<Type, object> _services = new Dictionary<Type, object>();
+        private static readonly Dictionary<Type, HashSet<Dependency>> _dependenciesByType = new Dictionary<Type, HashSet<Dependency>>();
+        private static readonly Dictionary<IConsumer, Dependency> _dependenciesByComponent = new Dictionary<IConsumer, Dependency>();
         private static readonly List<IConsumer> _toRemove = new List<IConsumer>();
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void Initialize()
         {
-            Services.Clear();
-            DependenciesByType.Clear();
-            DependenciesByComponent.Clear();
-            _toRemove.Clear();
-            
+            Reset();
+
             SceneManager.sceneUnloaded -= Sanitize;
             SceneManager.sceneUnloaded += Sanitize;
         }
 
+        public static void Reset()
+        {
+            _services.Clear();
+            _dependenciesByType.Clear();
+            _dependenciesByComponent.Clear();
+            _toRemove.Clear();
+        }
+
         private static void Sanitize(Scene scene)
         {
-            foreach (var consumer in DependenciesByComponent.Keys)
+            foreach (var consumer in _dependenciesByComponent.Keys)
             {
                 if(!consumer.IsAlive)
                     _toRemove.Add(consumer);
@@ -59,65 +64,6 @@ namespace HGrandry.Injection
         }
 
         #region Dependency
-
-        private abstract class Dependency
-        {
-            public readonly IConsumer Consumer;
-            protected readonly Dictionary<Type, object> Dependencies = new Dictionary<Type, object>();
-            internal readonly Type[] Types;
-
-            internal bool IsResolved { get; private set; }
-            
-            public bool HasResolved(Type type)
-            {
-                Dependencies.TryGetValue(type, out object dependency);
-                return dependency != null;
-            }
-
-            protected Dependency(IConsumer consumer, params Type[] types)
-            {
-                Types = types;
-
-                Consumer = consumer;
-                // Component.Deactivate(); // restore this?
-
-                foreach (Type type in types)
-                {
-                    Dependencies[type] = null;
-                }
-            }
-
-            public void Receive<T>(T dependency, Type type)
-            {
-                if (!Dependencies.ContainsKey(type))
-                    return;
-
-                Dependencies[type] = dependency;
-
-                if (Dependencies.Values.Any(x => x == null)) 
-                    return;
-                
-                OnResolved();
-                IsResolved = true;
-            }
-
-            public void Return<T>()
-            {
-                var type = typeof(T);
-                if (!Dependencies.ContainsKey(type))
-                    return;
-
-                Dependencies[type] = null;
-                IsResolved = false;
-#if UNITY_EDITOR
-                if (ApplicationHelper.IsStopping)
-                    return;
-#endif
-                Consumer?.Invalidate();
-            }
-
-            protected abstract void OnResolved();
-        }
 
         private class Dependency<T> : Dependency
         {
@@ -137,55 +83,76 @@ namespace HGrandry.Injection
 
         #endregion
         
-        #region Require
+        #region Inject
 
-        internal static void Require<T>(IConsumer component, Action<T> receive) where T : class, IInjectable
+        internal static void Inject<T>(IConsumer component, Action<T> receive) where T : class
         {
-            if (DependenciesByComponent.ContainsKey(component))
+            if (_dependenciesByComponent.ContainsKey(component))
                 return;
 
             var dependency = new Dependency<T>(component, receive);
-            DependenciesByComponent[component] = dependency;
+            _dependenciesByComponent[component] = dependency;
 
             var type = typeof(T);
-            OnNewDependency(type, dependency);
+            AddDependency(type, dependency);
         }
 
-        private static void OnNewDependency(Type type, Dependency dependency)
+        internal static void AddDependency(Dependency dependency)
         {
-            if (!DependenciesByType.TryGetValue(type, out HashSet<Dependency> list))
+            foreach (Type type in dependency.Types)
+            {
+                AddDependency(type, dependency);
+            }
+        }
+
+        internal static void AddDependency(Type type, Dependency dependency)
+        {
+            if (!_dependenciesByType.TryGetValue(type, out HashSet<Dependency> list))
             {
                 list = new HashSet<Dependency>();
-                DependenciesByType[type] = list;
+                _dependenciesByType[type] = list;
             }
 
             list.Add(dependency);
 
-            if (Services.ContainsKey(type))
+            if (_services.ContainsKey(type))
             {
-                dependency.Receive(Services[type], type);
+                dependency.Receive(_services[type], type);
             }
         }
 
         internal static void RemoveDependencies(IConsumer component)
         {
-            if (!DependenciesByComponent.TryGetValue(component, out Dependency dependency))
+            if (!_dependenciesByComponent.TryGetValue(component, out Dependency dependency))
                 return;
 
+            RemoveDependency(dependency);
+        }
+        
+        internal static void RemoveDependency(Dependency dependency)
+        {
+            if(ApplicationHelper.IsStopping)
+                return;
+            
+            if(dependency == null)
+                return;
+            
             foreach (Type type in dependency.Types)
             {
-                HashSet<Dependency> list = DependenciesByType[type];
+                if (!_dependenciesByType.ContainsKey(type)) 
+                    continue;
+                HashSet<Dependency> list = _dependenciesByType[type];
                 list.Remove(dependency);
             }
 
-            DependenciesByComponent.Remove(component);
+            _dependenciesByComponent.Remove(dependency.Consumer);
         }
 
-        internal static T GetRegistered<T>() where T : class, IInjectable
+        public static T GetService<T>() where T : class
         {
             Type type = typeof(T);
 
-            if (!Services.TryGetValue(type, out object service))
+            if (!_services.TryGetValue(type, out object service))
                 return null;
 
             return service as T;
@@ -195,14 +162,13 @@ namespace HGrandry.Injection
 
         #region Register
 
-        internal static void Register<T>(T service) where T : class, IInjectable
+        internal static void Register<T>(T service) where T : class
         {
             Register<T, T>(service, service.GetType());
         }
 
         internal static void RegisterAs<TService, TRegisterAs>(TService service)
             where TService : class, TRegisterAs
-            where TRegisterAs : IInjectable
         {
             Register<TService, TRegisterAs>(service, typeof(TRegisterAs));
         }
@@ -214,20 +180,19 @@ namespace HGrandry.Injection
         /// <param name="type">The type of service</param>
         internal static void Register<TService, TRegisterAs>(TService service, Type type)
             where TService : class, TRegisterAs
-            where TRegisterAs : IInjectable
         {
-            if (Services.ContainsKey(type))
+            if (_services.ContainsKey(type))
             {
                 Debug.LogWarning("A service of type " + type.Name + " is already registered.");
                 return;
             }
 
             // register the service
-            Services[type] = service;
+            _services[type] = service;
 
             // provide service to awaiting consumers
 
-            if (!DependenciesByType.TryGetValue(type, out HashSet<Dependency> dependencies))
+            if (!_dependenciesByType.TryGetValue(type, out HashSet<Dependency> dependencies))
                 return;
             
             foreach (Dependency dependency in dependencies.ToArray())
@@ -242,14 +207,14 @@ namespace HGrandry.Injection
 
         internal static void Unregister<TService, TRegisterAs>(TService service)
             where TService : class, TRegisterAs
-            where TRegisterAs : class, IInjectable
+            where TRegisterAs : class
         {
             Type type = typeof(TRegisterAs);
 
-            if (!Services.Remove(type))
+            if (!_services.Remove(type))
                 return;
 
-            if (!DependenciesByType.TryGetValue(type, out HashSet<Dependency> dependencies)) 
+            if (!_dependenciesByType.TryGetValue(type, out HashSet<Dependency> dependencies)) 
                 return;
             
             foreach (Dependency dependency in dependencies.ToArray())
@@ -264,7 +229,7 @@ namespace HGrandry.Injection
 
         public static IEnumerable<Type> GetUnresolvedDependencies(IConsumer component)
         {
-            if (!DependenciesByComponent.TryGetValue(component, out Dependency dependency))
+            if (!_dependenciesByComponent.TryGetValue(component, out Dependency dependency))
                 yield break;
 
             if (dependency.IsResolved)
@@ -288,7 +253,7 @@ namespace HGrandry.Injection
             // services
             
             s.AppendLine("Currently registered services:");
-            foreach (Type type in Services.Keys.OrderBy(x => x.Name))
+            foreach (Type type in _services.Keys.OrderBy(x => x.Name))
             {
                 s.AppendLine(type.Name);
             }
@@ -296,7 +261,7 @@ namespace HGrandry.Injection
 
             // unresolved
 
-            IEnumerable<Dependency> unresolved = DependenciesByComponent.Values.Where(x => !x.IsResolved);
+            IEnumerable<Dependency> unresolved = _dependenciesByComponent.Values.Where(x => !x.IsResolved);
             foreach (Dependency dependency in unresolved)
             {
                 var typeName = dependency.Consumer.GetTargetType().Name;
@@ -323,7 +288,7 @@ namespace HGrandry.Injection
             s.AppendLine("Currently consuming services:");
             lines.Clear();
             
-            var resolvedDependencies = DependenciesByComponent.Values.Where(x => x.IsResolved);
+            var resolvedDependencies = _dependenciesByComponent.Values.Where(x => x.IsResolved);
             foreach (var dependency in resolvedDependencies)
             {
                 var typeName = dependency.Consumer.GetTargetType().Name;
